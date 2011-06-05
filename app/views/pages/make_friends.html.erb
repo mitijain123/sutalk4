@@ -1,0 +1,50 @@
+<script src="<%= OP_CONFIG["api_javascript_sdk"] %>" type="text/javascript" charset="utf-8"></script>
+<%= javascript_include_tag 'opentok/make_friends_sdk' %>
+
+<% room_session_ids = Room.time_range(Time.now-2.hours, Time.now).map {|r| r.sessionId} %>
+  <script type="text/javascript">
+    var sessionId;
+    var opentok = eval( { session_id: '<%= OP_CONFIG["api_javascript_sdk"] %>'} );
+
+    var apiKey = <%= OP_CONFIG["api_key"] %>;
+    var got_room = false;
+    var token;
+
+     <% room_session_ids.each do |session_id| %>
+         token = '<%= Room.token(Room.opentok_config,session_id) %>';
+        sessionId = '<%= session_id %>';
+         if(!got_room){
+           startOpenTokMakeFriends();
+           var sutalkLink = "<%= Room.sutalkLink(session_id) %>";
+         }
+     <%  end %>
+
+     $('#sutalk_link_field').value= sutalkLink;
+
+     var session;
+     var publisher;
+     var subscribers = {};
+  </script>
+ <div class="round" id="sutalk_link">
+		<label class="small_label">Link</label>
+			<%= sutalkLink "sutalk_link_field" %>
+	</div>
+
+<table id="home_table">
+	<tr>
+		<td class="left_column">
+			<%= render 'pages/home/make_new_friends' %>
+		</td>
+		<td class="right_column">
+          &nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td id="left_column">
+			<%= render 'pages/home/friend_wall' %>
+		</td>
+		<td id="right_column">
+			<%= render 'pages/home/video_boxes' %>
+		</td>
+	</tr>
+  </table>

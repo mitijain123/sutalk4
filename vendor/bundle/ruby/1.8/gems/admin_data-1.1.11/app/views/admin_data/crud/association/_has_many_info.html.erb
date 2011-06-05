@@ -1,0 +1,7 @@
+<% if AdminData::ActiveRecordUtil.new(klass).declared_has_many_association_names.any? %>
+  <p>
+    <strong>has_many :</strong>
+    <%= has_many_data(model, klass).html_safe %>
+    &nbsp;
+  </p>
+<% end %>
